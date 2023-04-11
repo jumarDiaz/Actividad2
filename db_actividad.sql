@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 11-04-2023 a las 02:17:10
+-- Tiempo de generación: 11-04-2023 a las 02:51:09
 -- Versión del servidor: 10.9.3-MariaDB
 -- Versión de PHP: 7.3.10
 
@@ -44,6 +44,7 @@ CREATE TABLE `clientes` (
 --
 
 CREATE TABLE `coches` (
+  `ID` int(11) NOT NULL,
   `MATRICULA` varchar(45) NOT NULL,
   `NIT_C` int(11) NOT NULL,
   `CODIGO_M` int(11) NOT NULL,
@@ -64,19 +65,6 @@ CREATE TABLE `marca` (
   `DESCRIPCION` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `ventas`
---
-
-CREATE TABLE `ventas` (
-  `ID` int(10) UNSIGNED NOT NULL,
-  `COCHES_MATRICULA` varchar(45) NOT NULL,
-  `CLIENTES_NIT_C` int(11) NOT NULL,
-  `PRECIO` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-
 --
 -- Índices para tablas volcadas
 --
@@ -92,7 +80,7 @@ ALTER TABLE `clientes`
 -- Indices de la tabla `coches`
 --
 ALTER TABLE `coches`
-  ADD PRIMARY KEY (`MATRICULA`),
+  ADD PRIMARY KEY (`ID`),
   ADD KEY `fk_COCHES_MARCA_idx` (`MARCA_CODIGO_M`);
 
 --
@@ -102,12 +90,14 @@ ALTER TABLE `marca`
   ADD PRIMARY KEY (`CODIGO_M`);
 
 --
--- Indices de la tabla `ventas`
+-- AUTO_INCREMENT de las tablas volcadas
 --
-ALTER TABLE `ventas`
-  ADD PRIMARY KEY (`ID`,`COCHES_MATRICULA`,`CLIENTES_NIT_C`),
-  ADD KEY `fk_COCHES_has_CLIENTES_CLIENTES1_idx` (`CLIENTES_NIT_C`),
-  ADD KEY `fk_COCHES_has_CLIENTES_COCHES1_idx` (`COCHES_MATRICULA`);
+
+--
+-- AUTO_INCREMENT de la tabla `coches`
+--
+ALTER TABLE `coches`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Restricciones para tablas volcadas
@@ -118,13 +108,6 @@ ALTER TABLE `ventas`
 --
 ALTER TABLE `coches`
   ADD CONSTRAINT `fk_COCHES_MARCA` FOREIGN KEY (`MARCA_CODIGO_M`) REFERENCES `marca` (`CODIGO_M`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Filtros para la tabla `ventas`
---
-ALTER TABLE `ventas`
-  ADD CONSTRAINT `fk_COCHES_has_CLIENTES_CLIENTES1` FOREIGN KEY (`CLIENTES_NIT_C`) REFERENCES `clientes` (`NIT_C`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_COCHES_has_CLIENTES_COCHES1` FOREIGN KEY (`COCHES_MATRICULA`) REFERENCES `coches` (`MATRICULA`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
